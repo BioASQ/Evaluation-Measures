@@ -1,5 +1,5 @@
 
-Evaluation Measures for Task A evaluation of BioASQ Challenge
+Evaluation Measures for BioASQ Challenge
 -----------------------------------------------
 
 Instructions for BioASQ evaluation measures
