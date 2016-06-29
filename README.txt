@@ -1,7 +1,11 @@
+
+Evaluation Measures for Task A evaluation of BioASQ Challenge
+-----------------------------------------------
+
 Instructions for BioASQ evaluation measures
 -----------------------------------------------
 
-The package contains two folders "flat/" and "hierarchical/" corresponding to the flat and hierarchical measuresused during the evaluation of the challenge Task a. 
+The package contains two folders "flat/" and "hierarchical/" corresponding to the flat and hierarchical measures used during the evaluation of the challenge Task a. 
 Additionally, a folder "mesh/" contains the MESH 2016 hierarchy in parent-child relations both in the original DescriptorID format (mesh_hierarchy.txt) and in mapped format using integers (mesh_hiearchy_int.txt) as well as the corresponding mapping (mapping.txt).
 
 1. Before running the measures the results of the system and the golden standard results need to be mapped to the integer-based format:
