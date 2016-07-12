@@ -5,6 +5,9 @@ Evaluation Measures for BioASQ Challenge
 Instructions for BioASQ evaluation measures
 -----------------------------------------------
 
+Task A
+---------
+
 The package contains two folders "flat/" and "hierarchical/" corresponding to the flat and hierarchical measures used during the evaluation of the challenge Task a. 
 Additionally, a folder "mesh/" contains the MESH 2016 hierarchy in parent-child relations both in the original DescriptorID format (mesh_hierarchy.txt) and in mapped format using integers (mesh_hiearchy_int.txt) as well as the corresponding mapping (mapping.txt).
 
@@ -35,3 +38,16 @@ The program will print to the standard output the following numbers: accuracy Eb
 ./hierarchical/bin/HEMKit ./mesh/mesh_hier_int.txt true_labels_mapped.txt system_A_results_mapped.txt 4 5
 
 will result to the following output: hP hR hF LCA-P LCA-R LCA-F
+
+
+
+Task B
+---------
+
+1. For running the measures fro Task B, phase A the following command is invoked:
+
+java -Xmx10G -cp $CLASSPATH:./flat/BioASQEvaluation/dist/BioASQEvaluation.jar evaluation.EvaluatorTask1b -phaseA -e 3 golden_file.json system_response.json
+
+2. For running the measures fro Task B, phase B the following command is invoked:
+
+java -Xmx10G -cp $CLASSPATH:./flat/BioASQEvaluation/dist/BioASQEvaluation.jar evaluation.EvaluatorTask1b -phaseB -e 3 golden_file.json system_response.json
