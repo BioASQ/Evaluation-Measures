@@ -44,10 +44,10 @@ will result to the following output: hP hR hF LCA-P LCA-R LCA-F
 Task B
 ---------
 
-1. For running the measures fro Task B, phase A the following command is invoked:
+1. For running the measures for Task B, phase A the following command is invoked:
 
 java -Xmx10G -cp $CLASSPATH:./flat/BioASQEvaluation/dist/BioASQEvaluation.jar evaluation.EvaluatorTask1b -phaseA -e 3 golden_file.json system_response.json
 
-2. For running the measures fro Task B, phase B the following command is invoked:
+2. For running the measures for Task B, phase B the following command is invoked:
 
 java -Xmx10G -cp $CLASSPATH:./flat/BioASQEvaluation/dist/BioASQEvaluation.jar evaluation.EvaluatorTask1b -phaseB -e 3 golden_file.json system_response.json
