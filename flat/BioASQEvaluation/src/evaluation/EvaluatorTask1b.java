@@ -43,16 +43,18 @@ public class EvaluatorTask1b {
     Task1bData goldenData;
     Task1bData systemResp;
     double epsilon=0.00001;
-    int VERSION_OF_CHALLENGE=3; // we use this to have modified versions of the measures for BioASQ 2 and 3 and BIOASQ 4
-    static int BIOASQ2=2,BIOASQ3=3;
+    // The same as in Task1bData
+    int VERSION_OF_CHALLENGE=5; // we use this to have modified versions of the measures for different BioASQ years
+    // Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5
+    public static final int BIOASQ2=2,BIOASQ3=3,BIOASQ5=5;
     boolean verbosity = false;
     
     
     
     public EvaluatorTask1b(String golden, String system,int version)
     {
-        goldenData = new Task1bData(version);
-        systemResp = new Task1bData(version);
+        goldenData = new Task1bData(version, true);
+        systemResp = new Task1bData(version, false);
         try {
             goldenData.readData(golden);
             systemResp.readData(system);
@@ -722,7 +724,7 @@ public class EvaluatorTask1b {
                System.out.println("Usage: -phaseX [-e version] [-verbose] goldenfile systemfile");
                System.out.println("where X can be either A or B for the corresponding phases");
                System.out.println("and year refers to the version of the challenge. It can"
-                       + "be either 2 or 3 (this argument is optional)");
+                       + "be 2, 3 or 5 (this argument is optional - default value is 2)");
     }
     
     public static void main(String args[])

@@ -35,14 +35,20 @@ import java.util.logging.Logger;
 public class Task1bData {
    
     ArrayList<Question> questions;
-    int VERSION_OF_CHALLENGE=3; // we use this to have modified versions of the measures for BioASQ 2 and 3 and BIOASQ 4
-    static int BIOASQ2=2,BIOASQ3=3;
-
+    int VERSION_OF_CHALLENGE; 
+    boolean isGold;
     
-    public Task1bData(int version)
+    /**
+     * Data Loader for gold files and submissions
+     * 
+     * @param version   VERSION_OF_CHALLENGE, Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5
+     * @param isGold    Whether data to read are for gold data or not (since BioASQ5 different format for gold and submitted data, i.e. synonyms only in gold data)
+     */
+    public Task1bData(int version, boolean isGold)
     {
         questions = new ArrayList<Question>();
         VERSION_OF_CHALLENGE = version;
+        this.isGold = isGold;
     }
     
     public void readData(String jsonFile) throws IOException {
@@ -148,25 +154,50 @@ public class Task1bData {
                                 ArrayList<String> listOfAnswers=new ArrayList<String>();
                                 ArrayList<ArrayList<String>> listofarrays = new ArrayList<ArrayList<String>>();
                                 
-                                if(peek1==JsonToken.BEGIN_ARRAY) // list
+                                if(peek1==JsonToken.BEGIN_ARRAY) // list (or factoid-list since BioASQ3)
                                 {
-                                    listofarrays = readExactAnswerListOfArraysv2(reader);
-                                    //listOfAnswers = readExactAnswerListOfArrays(reader);
-                                    //ea.setAnswers(listOfAnswers);
-                                    ea.setLists(listofarrays);
+                                    /*
+                                     * Warning: changed the following for BioASQ 5
+                                     * No synonyms in submissions anymore, only in gold files
+                                    */
+                                    if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ2 || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ3){
+                                        listofarrays = readExactAnswerListOfArraysv2(reader);
+                                        ea.setLists(listofarrays);
+                                    } else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ5){
+                                        if(!this.isGold){ // For submissions use restricted parsing : only first of synonyms taken into account
+                                            listofarrays = readExactAnswerListOfArraysv3(reader);
+                                        } else { // For golden read all synonyms normally
+                                            listofarrays = readExactAnswerListOfArraysv2(reader);                                            
+                                        }
+                                        ea.setLists(listofarrays);
+                                    } else
+                                    {
+                                        System.out.println("Wrong challenge version. I will exit.");
+                                        System.exit(0);
+                                    }
                                 }
-                                else if(peek1 == JsonToken.STRING) // factoid
+                                else if(peek1 == JsonToken.STRING) // factoid (for BioASQ1&2)
                                 {
                                     /*
                                      * Warning: changed the following for BioASQ 3
                                      * we now have list of arrays for factoid 
                                     */
-                                    if(VERSION_OF_CHALLENGE == BIOASQ2){
+                                    if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ2){
                                         listOfAnswers = readExactAnswerArray(reader);
                                         ea.setAnswers(listOfAnswers);
                                     }
-                                    else if(VERSION_OF_CHALLENGE == BIOASQ3){
+                                    //not reached!
+                                    else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ3){
                                         listofarrays = readExactAnswerListOfArraysv2(reader);
+                                        ea.setLists(listofarrays);
+                                    }
+                                    /*
+                                     * Warning: changed the following for BioASQ 5
+                                     * No synonyms are submitted anymore by participants
+                                    */
+                                    //not reached!
+                                    else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ5){
+                                        listofarrays = readExactAnswerListOfArraysv3(reader);
                                         ea.setLists(listofarrays);
                                     }
                                     else
@@ -198,13 +229,17 @@ public class Task1bData {
                           }
                          
                       }
-                      else if(name.equals("ideal_answer"))
-                      {
-                          String ideal="";
-                          try{ideal = reader.nextString();}catch(IllegalStateException ex){System.out.println(ex.toString());System.out.println(jsonFile);
-                          }
-                          qst.setIdeal_answer(ideal);
-                      }
+                      
+//                      Edited for BioASQ4 Evaluation (to solve format conflict with Rouge.py)            
+//                      ideal answers are not evaluated with this code, so no need to read them(Rouge and manual queration is used instead)
+
+//                      else if(name.equals("ideal_answer"))
+//                      {
+//                          String ideal="";
+//                          try{ideal = reader.nextString();}catch(IllegalStateException ex){System.out.println(ex.toString());System.out.println(jsonFile);
+//                          }
+//                          qst.setIdeal_answer(ideal);
+//                      }
                       else if(name.equals("snippets"))
                       {
                           ArrayList<Snippet> snippets = readSnippets(reader);
@@ -282,7 +317,11 @@ public class Task1bData {
         return answers;
     }
  
-    
+    /** Reads exact answers submitted by systems for list [1] and factoid [2] questions 
+     *      Also reads gold exact answers for list and factoid questions ( where synonyms included in BioASQ5 too)
+     *      [1] Used for list questions, up to BioASQ4, when synonyms where submitted by participants
+     *      [2] Used for factoid questions, of BioASQ3&4, when synonyms where submitted by participants
+     */
     private ArrayList<ArrayList<String>> readExactAnswerListOfArraysv2(JsonReader reader)
     {
         ArrayList<ArrayList<String>> answers = new ArrayList<ArrayList<String>>();
@@ -299,10 +338,38 @@ public class Task1bData {
             }
         } catch (IOException ex) {
         }
-
+//        System.out.println(answers);
         return answers;
     }
  
+    /** Reads exact answers submitted by systems for list questions and factoid questions 
+     *      Used since BioASQ 5, where no synonyms where submitted by participants  
+     *      Only the first element of the inner list is taken into account for evaluation
+     *      Note: Not used for golden exact answers, where synonyms included
+     */
+    private ArrayList<ArrayList<String>> readExactAnswerListOfArraysv3(JsonReader reader)
+    {
+        ArrayList<ArrayList<String>> answers = new ArrayList<ArrayList<String>>();
+    
+        int count = 0;
+        try {
+            while(reader.hasNext()){
+            reader.beginArray();
+            while (reader.hasNext()) {
+                ArrayList<String> temp_ans = readExactAnswerArray(reader); // Full answer submitted (with possible synonyms)
+                ArrayList<String> temp_ans_fisrt_item = new ArrayList<String>(); // edited answer (only fisrt synonym kept)
+                if(!temp_ans.isEmpty()){
+                    temp_ans_fisrt_item.add(temp_ans.get(0));
+                }
+                answers.add(temp_ans_fisrt_item);
+            }
+            reader.endArray();
+            }
+        } catch (IOException ex) {
+        }
+//        System.out.println(answers);
+        return answers;
+    }
     
     private ArrayList<Triple> readTriplesArray(JsonReader reader){
     
@@ -354,7 +421,7 @@ public class Task1bData {
    }
     
     
-       private ArrayList<Snippet> readSnippets(JsonReader reader) {
+    private ArrayList<Snippet> readSnippets(JsonReader reader) {
          ArrayList<Snippet> snippets = new ArrayList<Snippet>();
         
         try {
@@ -492,14 +559,10 @@ public class Task1bData {
 
    }
    
-   public void exportRandomData(int numOfQuestions,String filetowrite)
-   {
-       
-   }
    
     public static void main(String args[])
     {
-        Task1bData data = new Task1bData(2);
+        Task1bData data = new Task1bData(2, false);
         try {
             data.readData(args[0]);
             data.dataProperties();

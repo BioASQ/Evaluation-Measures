@@ -41,9 +41,8 @@ public class QuestionAnswerEvaluator {
     int question_type;
     Boolean is_triple=false; 
     Boolean has_concepts=false;
-    int VERSION_OF_CHALLENGE=3; // we use this to have modified versions of the measures for BioASQ 2 and 3 and BIOASQ 4
+    int VERSION_OF_CHALLENGE;  // Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5
 
-    
     
     public QuestionAnswerEvaluator(String id,int version,boolean fl)
     {
@@ -72,12 +71,12 @@ public class QuestionAnswerEvaluator {
     {
         if(question_type == Question.FACTOID)
         {
-            if(this.VERSION_OF_CHALLENGE==2){
+            if(this.VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ2){
                 strictAccuracy(golden.getExact_answer(),response.getExact_answer(),exact_answers);
                 lenientAccuracy(golden.getExact_answer(),response.getExact_answer(),exact_answers);
                 meanReciprocalRank(golden.getExact_answer(),response.getExact_answer(),exact_answers);
             }
-            else if(this.VERSION_OF_CHALLENGE==3)
+            else if(this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ5)
             {
                 strictAccuracyForLists(golden.getExact_answer(),response.getExact_answer(),exact_answers);
                 lenientAccuracyForLists(golden.getExact_answer(),response.getExact_answer(),exact_answers);
@@ -295,7 +294,7 @@ public class QuestionAnswerEvaluator {
         //    check the guidlines **
          if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ2)
             cm.setAverage_precision(ap/(double)listGolden.size());
-         else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ3)
+         else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ5)
             cm.setAverage_precision(ap/10.0);
     }
     
@@ -343,7 +342,7 @@ public class QuestionAnswerEvaluator {
         //    check the guidlines **
         if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ2)
             cm.setAverage_precision(ap/(double)listGolden.size());
-        else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ3)
+        else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ5)
             cm.setAverage_precision(ap/10.0);
 
     }
@@ -458,8 +457,8 @@ public class QuestionAnswerEvaluator {
 	    return;
         
         ArrayList<ArrayList<String>> listsOfFactAnswers = system_answer.getLists();
-        
-        if(gold_answer.containsAnswerSynonym(listsOfFactAnswers.get(0),false)){
+        //check for emptyness of list added 
+        if(!listsOfFactAnswers.isEmpty() && gold_answer.containsAnswerSynonym(listsOfFactAnswers.get(0),false)){
                 exact_answers.setStrict_accuracy(1.0);
                 return;
             }
