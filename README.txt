@@ -9,7 +9,7 @@ Task A
 ---------
 
 The package contains two folders "flat/" and "hierarchical/" corresponding to the flat and hierarchical measures used during the evaluation of the challenge Task a. 
-Additionally, a folder "mesh/" contains the MESH 2016 hierarchy in parent-child relations both in the original DescriptorID format (mesh_hierarchy.txt) and in mapped format using integers (mesh_hiearchy_int.txt) as well as the corresponding mapping (mapping.txt).
+Additionally, a folder "mesh/" contains the MESH 2016 hierarchy in parent-child relations both in the original DescriptorID format (mesh_hierarchy.txt) and in mapped format using integers (mesh_hiearchy_int.txt) as well as the corresponding mapping (mapping.txt). 
 
 1. Before running the measures the results of the system and the golden standard results need to be mapped to the integer-based format:
 
@@ -51,3 +51,20 @@ java -Xmx10G -cp $CLASSPATH:./flat/BioASQEvaluation/dist/BioASQEvaluation.jar ev
 2. For running the measures for Task B, phase B the following command is invoked:
 
 java -Xmx10G -cp $CLASSPATH:./flat/BioASQEvaluation/dist/BioASQEvaluation.jar evaluation.EvaluatorTask1b -phaseB -e 3 golden_file.json system_response.json
+
+
+Task C
+---------
+Folder taskc contains evaluation measures for Task C on Funding Information Extraction From Biomedical Literature
+
+For running the measures for task C, i.e. micro-recall, the following commmand is invoked in python :
+
+python eval_script_5c.py -x /full/path/to/groundtruth/test.json -y /full/path/to/user/results.json -z /full/path/to/TaskCAgenciesParentChild.txt
+
+The flags passed correspond to the following:
+-x: absolute path to ground truth .json file
+-y: absolute path to user's predictions .json file
+-z: absolute path to the hierarchy .txt file. If this is ommited, hierarchy will not be taken into account.
+
+The output printed on stdout will be the Grant ID Micro Recall, Grant Agency Micro Recall and Full Grant Micro Recall achieved by the system result file, according to the [evaluation section in the guidelines](http://participants-area.bioasq.org/general_information/Task5c/).
+
