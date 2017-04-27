@@ -9,6 +9,7 @@ The evaluation script contains the functions needed to evaluate the results of t
 
 There are **no requirements** to be pre-installed.
 The only prerequisite is the [hierarchy of the selected Agencies as provided by the organizers](participants-area.bioasq.org/taskCAgencyParentChild/).
+The file of the results to be evaluated (i.e. results.json) should follow all the submission restrictions described in the Guidelines of task c, under section "Required Answers".
 
 ## Example usage:
 In **python2**:
