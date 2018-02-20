@@ -104,7 +104,7 @@ public class EvaluatorTask1b {
         System.out.println("\nMAP concepts: "+MapConcepts(qevalArray));
         System.out.println("MAP documents: "+MapDocuments(qevalArray));
         System.out.println("MAP triples: "+MapTriples(qevalArray));
-        System.out.println("MAP snippets: "+GMapSnippets(qevalArray));
+        System.out.println("MAP snippets: "+MapSnippets(qevalArray));
         System.out.println("GMAP concepts: "+GMapConcepts(qevalArray));
         System.out.println("GMAP documents: "+GMapDocuments(qevalArray));
         System.out.println("GMAP triples: "+GMapTriples(qevalArray));
@@ -138,7 +138,7 @@ public class EvaluatorTask1b {
                 +listPrecision(qevalArray) +" "+listRecall(qevalArray)+" "+listF1(qevalArray));
         
         if(this.verbosity){
-        System.out.println("\nYesNo accyracy: "+AccuracyExactAnswersYesNo(qevalArray));
+        System.out.println("\nYesNo accuracy: "+AccuracyExactAnswersYesNo(qevalArray));
         System.out.println("Strict accuracy: "+strictAccuracy(qevalArray));
         System.out.println("Lenient accuracy: "+lenientAccuracy(qevalArray));
         System.out.println("MRR: "+meanReciprocalRank(qevalArray));
