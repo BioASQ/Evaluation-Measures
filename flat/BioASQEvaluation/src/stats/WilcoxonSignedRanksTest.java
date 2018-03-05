@@ -65,7 +65,7 @@ public class WilcoxonSignedRanksTest {
         }
    }
     
-        public int [] nextMinIndexes(double []acc,double min)
+    public int [] nextMinIndexes(double []acc,double min)
     {
 	int [] ids=new int[acc.length];
 	int j=0;
@@ -175,7 +175,7 @@ public class WilcoxonSignedRanksTest {
 	return ranks;
     }
     
-     public static void main(String args[])
+    public static void main(String args[])
     {
         WilcoxonSignedRanksTest stest = new WilcoxonSignedRanksTest();
         stest.test();

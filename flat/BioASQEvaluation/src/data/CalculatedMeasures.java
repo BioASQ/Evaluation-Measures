@@ -28,7 +28,7 @@ public class CalculatedMeasures {
     double fmeasure;
     double average_precision;
     
-    double accuracy; // for phase B - exact answers
+    double accuracy; // for phase B - exact answers for yesno questions
     double strict_accuracy;
     double lenient_accuracy;
     double mean_reciprocal_rank;

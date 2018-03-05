@@ -24,7 +24,6 @@ package data;
 
 import com.google.gson.stream.JsonReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -41,17 +40,12 @@ public class TaskADataParser {
     double labelDensity=0;
     HashSet pmids;
     
-    
-    
-    
-    
-    /*
+    /**
      * 
      * Return a json reader and opens the array
      * 
      */
     public static JsonReader streamParser(String jsonFile) throws IOException {
-        
         
         int count = 0;
         int abstract_count=0;
@@ -65,14 +59,12 @@ public class TaskADataParser {
             System.out.println(nam);
             reader.beginArray();
             
-            
         } catch (Exception ex) {
            System.out.println("File not found");
            System.out.println(ex.toString());
         }
         return reader;
     }
- 
  
     public static void closeReader(JsonReader reader)
     {
@@ -125,31 +117,26 @@ public class TaskADataParser {
                 }
                 reader.endObject();
             }
-        } catch (Exception ex) {
-            
-        }
+        } catch (Exception ex) {  }
 
         return new PubMedDocument(text, title, pmid, journal, meshMajor);
     }
     
-    
-    
     public static String[] readLabelsArray(JsonReader reader){
      
-        String labels[];
-        ArrayList<String> lab = new ArrayList<String>();
-      try{
-     reader.beginArray();
-     while (reader.hasNext()) {
-      String nextString = reader.nextString();
-      lab.add(nextString);
-     }
-     reader.endArray();
+    String labels[];
+    ArrayList<String> lab = new ArrayList<String>();
+    try{
+        reader.beginArray();
+        while (reader.hasNext()) {
+            String nextString = reader.nextString();
+            lab.add(nextString);
+            }
+        reader.endArray();
      }catch(IOException ex){}
         labels = new String[lab.size()];
         labels = lab.toArray(labels);
      return labels;
    }
-    
-    
+     
 }

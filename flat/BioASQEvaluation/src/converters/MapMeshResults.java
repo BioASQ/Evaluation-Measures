@@ -29,7 +29,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
-
+/** This script called to prepare files for BioASQ Task A evaluation, for flat measures.
+ * 
+ *  Example call
+ *      java -cp BioASQEvaluation2018.jar converters.MapMeshResults "...\mesh_year_INT.txt" "...\labels_to_map.txt" "...\labels_mapped.txt" 
+ *              *labels_mapped.txt is the output file name
+ * 
+ * @author tasosnent
+ */
 public class MapMeshResults {
     
     Map mapping;

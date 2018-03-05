@@ -27,11 +27,9 @@ import data.PubMedDocument;
 import data.TaskADataParser;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -126,8 +124,6 @@ public class ExtractVocabulary {
     }
 
     /**
-     * 
-     * 
      * @param vocfile The vocabulary that will be used to vectorize the documents. For each document a term frequency will be
      *                   calculated
      * @param namepmidf
@@ -136,8 +132,7 @@ public class ExtractVocabulary {
      * @throws InstantiationException
      * @throws IllegalAccessException 
      */
-    
-     public void vectorizeDocuments(String vocfile,String namepmidf,String pmidintegerf,String outfile) throws InstantiationException, IllegalAccessException
+    public void vectorizeDocuments(String vocfile,String namepmidf,String pmidintegerf,String outfile) throws InstantiationException, IllegalAccessException
     {
         int numofdocs=0;
         Class stemClass;
@@ -150,68 +145,63 @@ public class ExtractVocabulary {
             Logger.getLogger(ExtractVocabulary.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
         TreeMap vocab = loadVocabularyMap(vocfile);
         TreeMap namepmid = loadNamePMIDMapping(namepmidf);
         TreeMap pmidinteger = loadPMIDIntegerMapping(pmidintegerf);
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(outfile));
-                    while(reader.hasNext()){
-                     
-                        TreeMap doc = new TreeMap();
-                    PubMedDocument nextDocument = TaskADataParser.getNextDocument(reader);
-                    numofdocs++;
-                    if(numofdocs%10000==0){
-                        System.out.println(numofdocs + " of documents have been processed");
-                        
-                    }
-                        
-                    String absrt = nextDocument.getText();
-                    String words[] = absrt.split("[\\W]+");
-                    //String wordsInLowerCase[] = new String[words.length]; 
-                    String wordInLowerCase;
-                 
-                    
-                    String[] meshMajor = nextDocument.getMeshMajor();
-                    
-                    for (int k = 0; k < words.length; k++)
+            while(reader.hasNext()){
+                TreeMap doc = new TreeMap();
+                PubMedDocument nextDocument = TaskADataParser.getNextDocument(reader);
+                numofdocs++;
+                if(numofdocs%10000==0){
+                    System.out.println(numofdocs + " of documents have been processed");
+                }
+
+                String absrt = nextDocument.getText();
+                String words[] = absrt.split("[\\W]+");
+                //String wordsInLowerCase[] = new String[words.length]; 
+                String wordInLowerCase;
+
+                String[] meshMajor = nextDocument.getMeshMajor();
+
+                for (int k = 0; k < words.length; k++)
+                {
+                    wordInLowerCase = words[k].toLowerCase();
+                    stemmer.setCurrent(wordInLowerCase);
+
+                    if (stemmer.stem()) {
+                                 wordInLowerCase = stemmer.getCurrent();
+                      }
+
+                    if(vocab.containsKey(wordInLowerCase))
                     {
-                        wordInLowerCase = words[k].toLowerCase();
-                        stemmer.setCurrent(wordInLowerCase);
-                        
-	      if (stemmer.stem()) {
-                           wordInLowerCase = stemmer.getCurrent();
-	     }
-                
-                        if(vocab.containsKey(wordInLowerCase))
+                        if(doc.containsKey(wordInLowerCase))
                         {
-                            if(doc.containsKey(wordInLowerCase))
-                            {
-                                Integer freq = (Integer)doc.get(wordInLowerCase);
-                                doc.put(wordInLowerCase, freq.intValue()+1);
-                            }else{doc.put(wordInLowerCase, 1);}
-                        }
-              
-                    }        
-            
-                   // System.out.println("Size of vectorized doc:"+doc.size());
-                    String vector = vectorToString(doc, vocab);
-                    for(int i=0;i<meshMajor.length;i++)
-                    {
-                        String pmid = (String)namepmid.get(meshMajor[i]);
-                        Integer intid = (Integer)pmidinteger.get(pmid);
-                        if(i==0)
-                        bw.write(intid.toString());
-                        else
-                            bw.write(","+intid.toString());
+                            Integer freq = (Integer)doc.get(wordInLowerCase);
+                            doc.put(wordInLowerCase, freq.intValue()+1);
+                        }else{doc.put(wordInLowerCase, 1);}
                     }
-                    bw.write(vector+"\n");
+
+                }        
+
+               // System.out.println("Size of vectorized doc:"+doc.size());
+                String vector = vectorToString(doc, vocab);
+                for(int i=0;i<meshMajor.length;i++)
+                {
+                    String pmid = (String)namepmid.get(meshMajor[i]);
+                    Integer intid = (Integer)pmidinteger.get(pmid);
+                    if(i==0)
+                    bw.write(intid.toString());
+                    else
+                        bw.write(","+intid.toString());
+                }
+                bw.write(vector+"\n");
             }
                     
              bw.close();
              
-                    
         } catch (Exception ex) {
             try {
                 bw.close();
@@ -224,8 +214,7 @@ public class ExtractVocabulary {
         
     }
 
-     
-     String vectorToString(TreeMap document,TreeMap vocab)
+    String vectorToString(TreeMap document,TreeMap vocab)
      {
          String vec = "";
          Iterator iter = document.keySet().iterator();
@@ -240,7 +229,7 @@ public class ExtractVocabulary {
          return vec;
      }
     
-     public TreeMap loadPMIDIntegerMapping(String mapfile)
+    public TreeMap loadPMIDIntegerMapping(String mapfile)
     {
         BufferedReader br = null;
         TreeMap mapping = new TreeMap();
@@ -260,7 +249,7 @@ public class ExtractVocabulary {
         return mapping;
     }
 
-     public TreeMap loadNamePMIDMapping(String mapfile)
+    public TreeMap loadNamePMIDMapping(String mapfile)
     {
         BufferedReader br = null;
         TreeMap mapping = new TreeMap();
@@ -280,8 +269,6 @@ public class ExtractVocabulary {
         return mapping;
     }
 
-     
-     
     private void writeVocabularyToFile(String vocfile) {
         BufferedWriter bw = null;
         try {
@@ -300,8 +287,7 @@ public class ExtractVocabulary {
         }
     }
 
-    
-        private void writeUniqueWordsToFile(String uniqueWordsfile) {
+    private void writeUniqueWordsToFile(String uniqueWordsfile) {
         BufferedWriter bw = null;
         try {
             bw = new  BufferedWriter(new FileWriter(uniqueWordsfile));
@@ -320,7 +306,6 @@ public class ExtractVocabulary {
         }
     }
 
-
     private void removeStopWords(String filestopwords,String vocabularyfile,String outfile){
         HashSet stopwords = loadStopWords(filestopwords);
         vocabulary = loadVocabulary(vocabularyfile);
@@ -338,9 +323,8 @@ public class ExtractVocabulary {
         writeVocabularyToFile(voc_new,outfile);
         
     }
-    
 
-        private void removeLowFrequencyWords(String filesfreqs,String vocabularyfile,String outfile,int min_freq){
+    private void removeLowFrequencyWords(String filesfreqs,String vocabularyfile,String outfile,int min_freq){
         TreeMap freqsfile = loadDocTermFrequencies(filesfreqs);
         vocabulary = loadVocabulary(vocabularyfile);
         HashSet voc_new = new HashSet();
@@ -359,8 +343,7 @@ public class ExtractVocabulary {
         
     }
 
-    
-     private HashSet loadStopWords(String filestopwords) {
+    private HashSet loadStopWords(String filestopwords) {
          HashSet list =new  HashSet();
         try {
             
@@ -377,8 +360,8 @@ public class ExtractVocabulary {
         return list;
     }
     
-          private HashSet loadVocabulary(String filevoc) {
-         HashSet list =new  HashSet();
+    private HashSet loadVocabulary(String filevoc) {
+        HashSet list =new  HashSet();
         try {
             
             BufferedReader br = null;
@@ -394,7 +377,7 @@ public class ExtractVocabulary {
         return list;
     }
           
-  private TreeMap loadVocabularyMap(String filevoc) {
+    private TreeMap loadVocabularyMap(String filevoc) {
          TreeMap list =new  TreeMap();
          int counter=1;
         try {
@@ -412,8 +395,7 @@ public class ExtractVocabulary {
         return list;
     }
   
-  private TreeMap loadDocTermFrequencies(String filefreq)
-  {
+    private TreeMap loadDocTermFrequencies(String filefreq){
        TreeMap list =new  TreeMap();
          
         try {
@@ -430,9 +412,9 @@ public class ExtractVocabulary {
             
         }
         return list;
-  }
+    }
   
-     public static void main(String args[])
+    public static void main(String args[])
     {
         if(args[0].equals("-makeVoc"))
         {
@@ -488,6 +470,4 @@ public class ExtractVocabulary {
         }
     }
 
-   
-    
 }

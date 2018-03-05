@@ -50,7 +50,6 @@ public class DrawStatisticsForPubMedData {
         pmids = new HashSet();
     }
     
-    
     public void parseStream(String jsonFile,String listOfJournals) throws IOException {
         
         String journalName;
@@ -107,7 +106,7 @@ public class DrawStatisticsForPubMedData {
             reader.endArray();
             
             System.out.println("Abstracts: "+abstract_count);
-                        System.out.println("Duplicates: "+duplicates);
+            System.out.println("Duplicates: "+duplicates);
 
             labelsPerArticle = (double)count/(double)numeOfArticles;
             labelDensity = labelDensity/(double)numeOfArticles;
@@ -115,8 +114,8 @@ public class DrawStatisticsForPubMedData {
             printStatistics();
             
         } catch (Exception ex) {
-                   System.out.println("Abstracts: "+abstract_count);
-                        System.out.println("Duplicates: "+duplicates);
+            System.out.println("Abstracts: "+abstract_count);
+            System.out.println("Duplicates: "+duplicates);
 
             labelsPerArticle = (double)count/(double)numeOfArticles;
             labelDensity = labelDensity/(double)numeOfArticles;
@@ -168,7 +167,6 @@ public class DrawStatisticsForPubMedData {
         System.out.println("Density: "+labelDensity);
 
     }
-    
     
     public static void main(String args[])
     {

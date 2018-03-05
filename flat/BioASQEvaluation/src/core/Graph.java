@@ -47,7 +47,7 @@ public class Graph {
         graph_parents = new TreeSet<Integer>();
     }
     
-       public void loadGraphFromFile(String filename){
+    public void loadGraphFromFile(String filename){
         BufferedReader br = null;
         int row=0;
         int fathers=0;
@@ -116,17 +116,13 @@ public class Graph {
         //System.out.println("Total num of classes: "+num_of_nodes);
     }
        
-       public boolean isLeaf(Integer node)
-       {
-           if(parent_child.containsKey(node))
-              return true;
-           
-           return false;
-       }
-       
-       
-  
+    public boolean isLeaf(Integer node)
+    {
+        if(parent_child.containsKey(node))
+           return true;
 
+        return false;
+    }
        
     public void printGraphStats()
     {
@@ -144,12 +140,11 @@ public class Graph {
         return (ArrayList<Integer>)child_parent.get(child);
     }
     
-    
-     public static void main(String[] args){
+    public static void main(String[] args){
         
         Graph graph = new Graph();
         graph.loadGraphFromFile(args[0]);
         graph.printGraphStats();
         //graph.findFirstLevelOfHierarchy();
-     }
+    }
 }
