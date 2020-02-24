@@ -48,6 +48,18 @@ Task B
 
 java -Xmx10G -cp $CLASSPATH:./flat/BioASQEvaluation/dist/BioASQEvaluation.jar evaluation.EvaluatorTask1b -phaseA -e 5 golden_file.json system_response.json
 
+will result to the following output: MPrec concepts, MRec concepts, MF1 concepts, MAP concepts, GMAP concepts, MPrec documents, MRec documents, MF1 documents, MAP documents, GMAP documents, MPrec snippets, MRec snippets, MF1 snippets, MAP snippets, GMAP snippets, MPrec triples, MRec triples, MF1 triples, MAP triples, GMAP triples. 
+
+or
+
+java -Xmx10G -cp $CLASSPATH:./flat/BioASQEvaluation/dist/BioASQEvaluation.jar evaluation.EvaluatorTask1b -phaseA -e 5 golden_file.json system_response.json -verbose
+
 2. For running the measures for Task B, phase B the following command is invoked:
 
 java -Xmx10G -cp $CLASSPATH:./flat/BioASQEvaluation/dist/BioASQEvaluation.jar evaluation.EvaluatorTask1b -phaseB -e 5 golden_file.json system_response.json
+
+will result to the following output: YesNo Acc, Factoid Strict Acc, Factoid Lenient Acc, Factoid MRR, List Prec, List Rec, List F1, YesNo macroF1, YesNo F1 yes, YesNo F1 no.
+
+or 
+
+java -Xmx10G -cp $CLASSPATH:./flat/BioASQEvaluation/dist/BioASQEvaluation.jar evaluation.EvaluatorTask1b -phaseB -e 5 golden_file.json system_response.json -verbose
