@@ -46,7 +46,7 @@ public class QuestionAnswerEvaluator {
     Boolean is_yes=false; // Flag: when true this question is a yesno question and its golden answer is "yes"
     Boolean is_triple=false; // Flag: when true this question has at leat one golden triple
     Boolean has_concepts=false; // Flag: when true this question has at leat one golden concept
-    int VERSION_OF_CHALLENGE;  // Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5
+    int VERSION_OF_CHALLENGE;  // Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5, version 8 since BioASQ8
 
     /**
      * Constructor for phase A
@@ -93,7 +93,7 @@ public class QuestionAnswerEvaluator {
                 lenientAccuracy(golden.getExact_answer(),response.getExact_answer(),exact_answers);
                 meanReciprocalRank(golden.getExact_answer(),response.getExact_answer(),exact_answers);
             } // Since BioASQ3 up to five answers can be submitted for factoid questions
-            else if(this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ5)
+            else if(this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ5 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ8)
             {
                 strictAccuracyForLists(golden.getExact_answer(),response.getExact_answer(),exact_answers);
                 lenientAccuracyForLists(golden.getExact_answer(),response.getExact_answer(),exact_answers);
@@ -290,6 +290,9 @@ public class QuestionAnswerEvaluator {
             cm.setAverage_precision(ap/(double)listGolden.size());
          else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ5)
             cm.setAverage_precision(ap/10.0);
+         else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ8)
+            {cm.setAverage_precision(ap/ Math.min(10.0,(double)listGolden.size()));
+            }
     }
     /**
      * Calculate Precision at R first items for this answer - list of elements (documents, concepts etc)
@@ -356,7 +359,9 @@ public class QuestionAnswerEvaluator {
             cm.setAverage_precision(ap/(double)listGolden.size());
         else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ5)
             cm.setAverage_precision(ap/10.0);
-
+        else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ8)
+            {cm.setAverage_precision(ap/ Math.min(10.0,(double)listGolden.size()));
+            }
     }
     /**
      * Calculate Precision at R first snippets of this list

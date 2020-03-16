@@ -55,9 +55,9 @@ public class EvaluatorTask1b {
     Task1bData systemResp;
     double epsilon=0.00001;
     // The same as in Task1bData
-    int VERSION_OF_CHALLENGE=5; // we use this to have modified versions of the measures for different BioASQ years
-    // Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5
-    public static final int BIOASQ2=2,BIOASQ3=3,BIOASQ5=5;
+    int VERSION_OF_CHALLENGE=8; // we use this to have modified versions of the measures for different BioASQ years
+    // Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5,version 8 since BioASQ8 
+    public static final int BIOASQ2=2,BIOASQ3=3,BIOASQ5=5,BIOASQ8=8;
     boolean verbosity = false;
     
     
@@ -65,7 +65,7 @@ public class EvaluatorTask1b {
      * Reads golden data and submission data from corresponding files
      * @param golden    golden file
      * @param system    submitted file, for evaluation
-     * @param version   The version of the Challenge  // Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5
+     * @param version   The version of the Challenge  // Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5,version 8 since BioASQ8 
      */
     public EvaluatorTask1b(String golden, String system,int version)
     {
@@ -914,7 +914,7 @@ public class EvaluatorTask1b {
         System.out.println("Usage: -phaseX [-e version] goldenfile systemfile [-verbose]");
         System.out.println("Where X can be either A or B for the corresponding phases,");
         System.out.println("goldenfile systemfile are the files (golden and submitted respectively) ");
-        System.out.println("and version of the challenge can be 2 (for BioASQ1&2), 3 (for BioASQ3&4) or 5 (for BioASQ5 and later). "
+        System.out.println("and version of the challenge can be 2 (for BioASQ1&2), 3 (for BioASQ3&4), 5 (for BioASQ5,6&7) or 8 (for BioASQ8 and later). "
                 + "This argument is optional - default value is 2)");
         System.out.println("verbose, also optional, enables human readable output.");
     }

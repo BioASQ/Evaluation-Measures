@@ -41,7 +41,7 @@ public class Task1bData {
     /**
      * Data Loader for gold files and submissions
      * 
-     * @param version   VERSION_OF_CHALLENGE, Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5
+     * @param version   VERSION_OF_CHALLENGE, Use version 2 for BioASQ1&2, version 3 for BioASQ3&4, version 5 since BioASQ5, version 8 since BioASQ8
      * @param isGold    Whether data to read are for gold data or not (since BioASQ5 different format for gold and submitted data, i.e. synonyms only in gold data)
      */
     public Task1bData(int version, boolean isGold)
@@ -163,7 +163,7 @@ public class Task1bData {
                                     if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ2 || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ3){
                                         listofarrays = readExactAnswerListOfArraysv2(reader);
                                         ea.setLists(listofarrays);
-                                    } else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ5){
+                                    } else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ5 || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ8){
                                         if(!this.isGold){ // For submissions use restricted parsing : only first of synonyms taken into account
                                             listofarrays = readExactAnswerListOfArraysv3(reader);
                                         } else { // For golden read all synonyms normally
@@ -196,7 +196,7 @@ public class Task1bData {
                                      * No synonyms are submitted anymore by participants
                                     */
                                     //not reached!
-                                    else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ5){
+                                    else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ5 || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ8){
                                         listofarrays = readExactAnswerListOfArraysv3(reader);
                                         ea.setLists(listofarrays);
                                     }
