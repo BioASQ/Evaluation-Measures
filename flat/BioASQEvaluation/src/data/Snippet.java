@@ -39,6 +39,12 @@ public class Snippet {
         this.end_index = end_index;
     }
 
+    @Override
+    public String toString(){
+        String s ="[" + document + "]" + text;
+        return s;                
+    }
+    
     public void setBegin_index(int begin_index) {
         this.begin_index = begin_index;
     }
@@ -163,4 +169,6 @@ public class Snippet {
         return newsn;
     }
 
+
+            
 }

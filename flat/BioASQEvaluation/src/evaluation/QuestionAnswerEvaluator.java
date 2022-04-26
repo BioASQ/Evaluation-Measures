@@ -26,7 +26,9 @@ import data.CalculatedMeasures;
 import data.ExactAnswer;
 import data.Question;
 import data.Snippet;
+
 import java.util.ArrayList;
+
 /**
  * A class with "question-level measures"
  *      An object of this class is used to represent each submitted question during test-set-level measure calculation. 
@@ -52,7 +54,6 @@ public class QuestionAnswerEvaluator {
      * Constructor for phase A
      * @param id        question id
      * @param version   the version of the challenge
-     * @param fl        This is not used. TODO: Delete this parameter
      */
     public QuestionAnswerEvaluator(String id,int version)
     {
@@ -88,12 +89,15 @@ public class QuestionAnswerEvaluator {
     {
         if(question_type == Question.FACTOID)
         {
-            if(this.VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ2){
+            if(this.VERSION_OF_CHALLENGE == EvaluatorTask1b.BIOASQ2){
                 strictAccuracy(golden.getExact_answer(),response.getExact_answer(),exact_answers);
                 lenientAccuracy(golden.getExact_answer(),response.getExact_answer(),exact_answers);
                 meanReciprocalRank(golden.getExact_answer(),response.getExact_answer(),exact_answers);
             } // Since BioASQ3 up to five answers can be submitted for factoid questions
-            else if(this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ5 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ8)
+            else if(this.VERSION_OF_CHALLENGE== EvaluatorTask1b.BIOASQ3
+                    || this.VERSION_OF_CHALLENGE== EvaluatorTask1b.BIOASQ5
+                    || this.VERSION_OF_CHALLENGE== EvaluatorTask1b.BIOASQ8
+                    || this.VERSION_OF_CHALLENGE== EvaluatorTask1b.BIOASQ9)
             {
                 strictAccuracyForLists(golden.getExact_answer(),response.getExact_answer(),exact_answers);
                 lenientAccuracyForLists(golden.getExact_answer(),response.getExact_answer(),exact_answers);
@@ -288,9 +292,9 @@ public class QuestionAnswerEvaluator {
          if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ2)
 	 // we should divide with the size of the golden list             
             cm.setAverage_precision(ap/(double)listGolden.size());
-         else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ5)
+         else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE== EvaluatorTask1b.BIOASQ5)
             cm.setAverage_precision(ap/10.0);
-         else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ8)
+         else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ8 || VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ9)
             {cm.setAverage_precision(ap/ Math.min(10.0,(double)listGolden.size()));
             }
     }
@@ -357,9 +361,9 @@ public class QuestionAnswerEvaluator {
         //    check the guidlines **
         if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ2)
             cm.setAverage_precision(ap/(double)listGolden.size());
-        else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE==evaluation.EvaluatorTask1b.BIOASQ5)
+        else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ3 || this.VERSION_OF_CHALLENGE== EvaluatorTask1b.BIOASQ5)
             cm.setAverage_precision(ap/10.0);
-        else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ8)
+        else if(VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ8 || VERSION_OF_CHALLENGE==EvaluatorTask1b.BIOASQ9)
             {cm.setAverage_precision(ap/ Math.min(10.0,(double)listGolden.size()));
             }
     }

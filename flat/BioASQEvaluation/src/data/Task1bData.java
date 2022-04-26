@@ -24,6 +24,7 @@ package data;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -163,7 +164,8 @@ public class Task1bData {
                                     if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ2 || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ3){
                                         listofarrays = readExactAnswerListOfArraysv2(reader);
                                         ea.setLists(listofarrays);
-                                    } else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ5 || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ8){
+                                    } else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ5 || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ8
+                                            || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ9){
                                         if(!this.isGold){ // For submissions use restricted parsing : only first of synonyms taken into account
                                             listofarrays = readExactAnswerListOfArraysv3(reader);
                                         } else { // For golden read all synonyms normally
@@ -196,7 +198,9 @@ public class Task1bData {
                                      * No synonyms are submitted anymore by participants
                                     */
                                     //not reached!
-                                    else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ5 || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ8){
+                                    else if(VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ5
+                                            || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ8
+                                            || VERSION_OF_CHALLENGE == evaluation.EvaluatorTask1b.BIOASQ9){
                                         listofarrays = readExactAnswerListOfArraysv3(reader);
                                         ea.setLists(listofarrays);
                                     }
